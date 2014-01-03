@@ -93,7 +93,7 @@ class GetRankingTask extends AsyncTask<Void, Void, List<Map<String, String>>> {
 	}
 
 	private JSONObject convertToJson(HttpResponse response) throws IOException, JSONException {
-		String jsonResult = new StreamReader().inputStreamToString(response.getEntity().getContent()).toString();
+		String jsonResult = StreamTools.inputStreamToString(response.getEntity().getContent()).toString();
 		JSONObject json = new JSONObject(jsonResult);
 		return json;
 	}

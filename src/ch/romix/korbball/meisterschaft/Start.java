@@ -107,7 +107,7 @@ public class Start extends Activity {
 			HttpResponse response;
 			try {
 				response = httpclient.execute(httppost);
-				String jsonResult = new StreamReader().inputStreamToString(response.getEntity().getContent()).toString();
+				String jsonResult = StreamTools.inputStreamToString(response.getEntity().getContent()).toString();
 				JSONObject object = new JSONObject(jsonResult);
 				@SuppressWarnings("rawtypes")
 				Iterator it = object.keys();

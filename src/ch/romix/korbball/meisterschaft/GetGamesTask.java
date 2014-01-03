@@ -51,7 +51,7 @@ class GetGamesTask extends AsyncTask<Void, Void, List<Game>> {
 		List<Game> games = new LinkedList<Game>();
 		try {
 			HttpResponse response = requestGames();
-			String jsonResult = new StreamReader().inputStreamToString(response.getEntity().getContent()).toString();
+			String jsonResult = StreamTools.inputStreamToString(response.getEntity().getContent()).toString();
 			JSONArray json = new JSONArray(jsonResult);
 			for (int i = 0; i < json.length(); i++) {
 				JSONObject gameJson = json.getJSONObject(i);

@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class StreamReader {
-	public StringBuilder inputStreamToString(InputStream is) {
+public class StreamTools {
+	public static StringBuilder inputStreamToString(InputStream is) {
 		String rLine = null;
 		StringBuilder answer = new StringBuilder();
 		BufferedReader rd = new BufferedReader(new InputStreamReader(is));
