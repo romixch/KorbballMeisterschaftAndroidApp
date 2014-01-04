@@ -3,35 +3,22 @@
     android:id="@+id/GameItem"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:paddingLeft="3dp"
+    android:paddingRight="3dp"
     android:weightSum="1" >
 
     <RelativeLayout
         android:id="@+id/meta"
-        android:layout_width="0dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="left|center_vertical"
-        android:layout_weight="0.3" >
-
-        <TextView
-            android:id="@+id/game_round"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="round"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <TextView
-            android:id="@+id/game_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/game_round"
-            android:text="day"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:layout_gravity="top" >
 
         <TextView
             android:id="@+id/game_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/game_day"
+            android:layout_marginRight="5dp"
             android:text="time"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
@@ -39,43 +26,59 @@
             android:id="@+id/game_hall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/game_time"
+            android:layout_marginRight="5dp"
+            android:layout_toRightOf="@id/game_time"
             android:text="hall"
             android:textAppearance="?android:attr/textAppearanceSmall" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/game_and_result"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|center_vertical"
-        android:layout_weight="0.6" >
 
         <TextView
-            android:id="@+id/game_teams"
+            android:id="@+id/game_round"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="teammmmA - teammmmB"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:layout_marginRight="5dp"
+            android:layout_toRightOf="@id/game_hall"
+            android:text="round"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-        <TextView
-            android:id="@+id/game_result"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/game_teams"
-            android:layout_centerHorizontal="true"
-            android:text="result"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/game_points"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_weight="0.1"
-        android:gravity="right"
-        android:text="2"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_gravity="top"
+        android:layout_marginRight="4dp" >
+
+        <RelativeLayout
+            android:id="@+id/game_and_result"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/game_teams"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="teammmmA - teammmmB"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <TextView
+                android:id="@+id/game_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/game_teams"
+                android:layout_centerHorizontal="true"
+                android:text="result"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/game_points"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="right|center_vertical"
+            android:text="2"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    </LinearLayout>
 
 </LinearLayout>
