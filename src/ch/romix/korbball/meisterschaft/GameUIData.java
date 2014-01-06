@@ -32,6 +32,11 @@ public abstract class GameUIData {
 		return view;
 	}
 
+	protected void setViewText(View parentView, int childViewId, String text) {
+		TextView textView = (TextView) parentView.findViewById(childViewId);
+		textView.setText(text);
+	}
+
 	protected abstract View createView(LayoutInflater inflater, ViewGroup parent, Context context);
 
 	private static final class GameUIDataForDay extends GameUIData {
@@ -42,17 +47,17 @@ public abstract class GameUIData {
 		}
 
 		@Override
-		protected View createView(LayoutInflater inflater, ViewGroup parent, Context context) {
-			View rowView = inflater.inflate(R.layout.dayitem, parent, false);
-			TextView day = (TextView) rowView.findViewById(R.id.game_day);
-			day.setText(this.day + ":");
-			return rowView;
-		}
-
-		@Override
 		public Object getData() {
 			return day;
 		}
+
+		@Override
+		protected View createView(LayoutInflater inflater, ViewGroup parent, Context context) {
+			View rowView = inflater.inflate(R.layout.dayitem, parent, false);
+			setViewText(rowView, R.id.game_day, day + ":");
+			return rowView;
+		}
+
 	}
 
 	private static final class GameUIDataForGame extends GameUIData {
@@ -73,31 +78,32 @@ public abstract class GameUIData {
 		protected View createView(LayoutInflater inflater, ViewGroup parent, Context context) {
 			View rowView = inflater.inflate(R.layout.gameitem, parent, false);
 
-			TextView hall = (TextView) rowView.findViewById(R.id.game_hall);
-			hall.setText(game.getHall());
-			TextView time = (TextView) rowView.findViewById(R.id.game_time);
-			time.setText(game.getTime());
-			TextView round = (TextView) rowView.findViewById(R.id.game_round);
-			round.setText(game.getRound());
-			TextView teams = (TextView) rowView.findViewById(R.id.game_teams);
-			String teamString = String.format(context.getResources().getString(R.string.games_teams), game.getTeamA(), game.getTeamB());
-			teams.setText(teamString, TextView.BufferType.SPANNABLE);
+			setViewText(rowView, R.id.game_hall, game.getHall());
+			setViewText(rowView, R.id.game_time, game.getTime());
+			setViewText(rowView, R.id.game_round, game.getRound());
+			setTeamText(context, rowView);
 
-			Spannable text = (Spannable) teams.getText();
-			StyleSpan boldSpan = new StyleSpan(android.graphics.Typeface.BOLD_ITALIC);
-			if (game.getTeamA().equals(currentTeam)) {
-				text.setSpan(boldSpan, 0, game.getTeamA().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			String resultString = calculateResultText(context);
+			setViewText(rowView, R.id.game_result, resultString);
+
+			setPointsText(rowView);
+
+			return rowView;
+		}
+
+		private String calculateResultText(Context context) {
+			String resultString;
+			if (game.isPlayed()) {
+				resultString = String.format(context.getResources().getString(R.string.games_result), game.getResultA(), game.getResultB());
 			} else {
-				int l = game.getTeamB().length();
-				text.setSpan(boldSpan, text.length() - l, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+				resultString = "";
 			}
+			return resultString;
+		}
 
-			TextView result = (TextView) rowView.findViewById(R.id.game_result);
+		private void setPointsText(View rowView) {
 			TextView pointsView = (TextView) rowView.findViewById(R.id.game_points);
 			if (game.isPlayed()) {
-				String resultString = String.format(context.getResources().getString(R.string.games_result), game.getResultA(),
-						game.getResultB());
-				result.setText(resultString);
 
 				String points = "";
 				CharacterStyle colorSpan = null;
@@ -115,11 +121,24 @@ public abstract class GameUIData {
 				Spannable pointsText = (Spannable) pointsView.getText();
 				pointsText.setSpan(colorSpan, 0, points.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			} else {
-				result.setText("");
 				pointsView.setText("");
 			}
-
-			return rowView;
 		}
+
+		private void setTeamText(Context context, View rowView) {
+			TextView teams = (TextView) rowView.findViewById(R.id.game_teams);
+			String teamString = String.format(context.getResources().getString(R.string.games_teams), game.getTeamA(), game.getTeamB());
+			teams.setText(teamString, TextView.BufferType.SPANNABLE);
+
+			Spannable text = (Spannable) teams.getText();
+			StyleSpan boldSpan = new StyleSpan(android.graphics.Typeface.BOLD_ITALIC);
+			if (game.getTeamA().equals(currentTeam)) {
+				text.setSpan(boldSpan, 0, game.getTeamA().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			} else {
+				int l = game.getTeamB().length();
+				text.setSpan(boldSpan, text.length() - l, text.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+			}
+		}
+
 	}
 }
