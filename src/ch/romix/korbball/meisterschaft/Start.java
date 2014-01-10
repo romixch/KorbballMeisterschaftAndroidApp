@@ -5,12 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,16 +13,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 public class Start extends Activity {
 
-	private static final long ONE_MONTH_IN_MILLIS = 30L * 24 * 60 * 60 * 1000;
-	private static final long ONE_DAY_IN_MILLIS = 24L * 60 * 60 * 1000;
 	static final String GROUP_NAME = "name";
 	static final String GROUP_ID = "id";
-	private static final String LAST_POPUP_DATE = "LAST_POPUP_DATE";
 	private List<Map<String, String>> groupsByGroupId;
 	private SimpleAdapter simpleAdapter;
 
@@ -51,47 +44,15 @@ public class Start extends Activity {
 				startActivity(myIntent);
 			}
 		});
+		Button nextFeature = (Button) findViewById(R.id.nextFeature);
+		nextFeature.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent pollIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://romixch.typeform.com/to/r3ELGk"));
+				startActivity(pollIntent);
+			}
+		});
 		new GetGroupsTask(groupsByGroupId, simpleAdapter, this).execute();
-		askToFillFeedbackForm();
-	}
-
-	private void askToFillFeedbackForm() {
-		if (shouldShowPopupNow()) {
-			showPopup();
-		}
-	}
-
-	private boolean shouldShowPopupNow() {
-		SharedPreferences preferences = getPreferences(Activity.MODE_PRIVATE);
-		final long nextPopupInMillis = preferences.getLong(LAST_POPUP_DATE, System.currentTimeMillis());
-		return System.currentTimeMillis() > nextPopupInMillis;
-	}
-
-	private void showPopup() {
-		Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Was darf es sein?");
-		builder.setMessage("Liebe(r) Korbballer(in). Damit ich beim nächsten Update deine liebste Funktion ausliefern kann, bitte ich dich, mir kurz ein paar Ideen zu bewerten.");
-		builder.setPositiveButton("Jetzt bewerten", new OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://romixch.typeform.com/to/r3ELGk"));
-				startActivity(browserIntent);
-				setNextPopupTime(ONE_MONTH_IN_MILLIS);
-			}
-		});
-		builder.setNegativeButton("Später erinnern", new OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				setNextPopupTime(ONE_DAY_IN_MILLIS);
-			}
-		});
-		builder.create();
-		builder.show();
-	}
-
-	private void setNextPopupTime(long showAgainInMillis) {
-		getPreferences(MODE_PRIVATE).edit().putLong(LAST_POPUP_DATE, System.currentTimeMillis() + showAgainInMillis).commit();
 	}
 
 	@Override

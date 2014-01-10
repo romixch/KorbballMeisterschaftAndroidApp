@@ -14,4 +14,5 @@
     <string name="games_result">%1$d : %2$d</string>
     <string name="Refresh">Aktualisieren</string>
     <string name="noConnection">Server kann momentan leider nicht erreicht werden.</string>
+    <string name="nextFeature">Bestimme das nächste Feature dieser App!</string>
 </resources>
