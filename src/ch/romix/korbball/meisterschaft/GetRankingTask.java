@@ -108,11 +108,13 @@ class GetRankingTask extends AsyncTask<Void, Void, List<Map<String, String>>> {
 
 	@Override
 	protected void onPostExecute(List<Map<String, String>> result) {
-		this.rankingActivity.data.clear();
-		for (Map<String, String> map : result) {
-			this.rankingActivity.data.add(map);
+		if (!rankingActivity.isFinishing()) {
+			this.rankingActivity.data.clear();
+			for (Map<String, String> map : result) {
+				this.rankingActivity.data.add(map);
+			}
+			this.rankingActivity.updateView();
 		}
-		this.rankingActivity.updateView();
 		super.onPostExecute(result);
 	}
 }
