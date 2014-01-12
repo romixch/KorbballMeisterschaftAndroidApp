@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -23,16 +24,18 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.BaseAdapter;
 
-class GetGroupsTask extends AsyncTask<Void, Void, List<Map<String, String>>> {
+public class GetGroupsTask extends AsyncTask<Void, Void, List<Map<String, String>>> {
 	private final List<Map<String, String>> groupsByGroupId;
 	private final BaseAdapter adapter;
 	private final Context context;
 	private Exception exception;
+	private CountDownLatch finishedDrawingSignal;
 
 	public GetGroupsTask(List<Map<String, String>> groupsByGroupId, BaseAdapter adapter, Context context) {
 		this.groupsByGroupId = groupsByGroupId;
 		this.adapter = adapter;
 		this.context = context;
+		finishedDrawingSignal = new CountDownLatch(1);
 	}
 
 	@Override
@@ -90,6 +93,11 @@ class GetGroupsTask extends AsyncTask<Void, Void, List<Map<String, String>>> {
 			adapter.notifyDataSetChanged();
 		}
 		super.onPostExecute(result);
+		finishedDrawingSignal.countDown();
+	}
+
+	public void waitForDrawing() throws InterruptedException {
+		finishedDrawingSignal.await();
 	}
 
 	private boolean hasException() {

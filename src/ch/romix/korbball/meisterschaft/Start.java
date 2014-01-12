@@ -3,6 +3,7 @@ package ch.romix.korbball.meisterschaft;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,6 +24,7 @@ public class Start extends Activity {
 	static final String GROUP_ID = "id";
 	private List<Map<String, String>> groupsByGroupId;
 	private SimpleAdapter simpleAdapter;
+	private GetGroupsTask getGroupsTask;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,8 @@ public class Start extends Activity {
 				startActivity(pollIntent);
 			}
 		});
-		new GetGroupsTask(groupsByGroupId, simpleAdapter, this).execute();
+		getGroupsTask = new GetGroupsTask(groupsByGroupId, simpleAdapter, this);
+		getGroupsTask.execute();
 	}
 
 	@Override
@@ -69,5 +72,9 @@ public class Start extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void waitForGroups() throws InterruptedException, ExecutionException {
+		getGroupsTask.waitForDrawing();
 	}
 }
