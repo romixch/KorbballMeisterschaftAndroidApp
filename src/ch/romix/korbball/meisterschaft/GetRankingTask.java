@@ -14,6 +14,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +28,7 @@ class GetRankingTask extends AsyncTask<Void, Void, List<Map<String, String>>> {
 	private static final String JSON_TEAM = "team";
 	private static final String JSON_TEAM_ID = "teamId";
 	private static final String JSON_RANK = "rank";
+	private static final String JSON_RATE = "rate";
 
 	private final RankingActivity rankingActivity;
 
@@ -81,12 +83,18 @@ class GetRankingTask extends AsyncTask<Void, Void, List<Map<String, String>>> {
 		String teamPoints = teamObject.getString(JSON_POINTS);
 		int teamGames = teamObject.getInt(JSON_GAMES);
 		int teamPlayed = teamObject.getInt(JSON_PLAYED);
+		JSONArray jsonRate = teamObject.getJSONArray(JSON_RATE);
+		String shot = jsonRate.getString(0);
+		String got = jsonRate.getString(1);
+		String rate = shot + ':' + got;
 		HashMap<String, String> teamMap = new HashMap<String, String>();
 		teamMap.put(RankingActivity.TEAM_TITLE, rankingString + ". " + teamName);
 		teamMap.put(RankingActivity.TEAM_NAME, teamName);
-		String detailString = String.format(this.rankingActivity.getResources().getString(R.string.ranking_item_detail), teamPoints,
-				teamGames, teamPlayed);
-		teamMap.put(RankingActivity.DETAIL, detailString);
+		String gamesFormatString = "%1$d/%2$d";
+		String detailGames = String.format(gamesFormatString, teamPlayed, teamGames);
+		teamMap.put(RankingActivity.GAMES, detailGames);
+		teamMap.put(RankingActivity.RATE, rate);
+		teamMap.put(RankingActivity.POINTS, teamPoints);
 		teamMap.put(RankingActivity.RANKING, rankingString);
 		teamMap.put(RankingActivity.TEAM_ID, teamObject.getString(JSON_TEAM_ID));
 		return teamMap;

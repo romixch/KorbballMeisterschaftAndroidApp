@@ -4,7 +4,6 @@
     <string name="menu_info">Info</string>
     <string name="welcome">Bitte wähle eine Gruppe aus folgender Liste aus:</string>
     <string name="title_activity_ranking">Rangliste %1$s</string>
-    <string name="ranking_item_detail">Punkte: %1$s / Spiele gesamt: %2$d / davon gespielt: %3$d</string>
     <string name="title_activity_info">Info</string>
     <string name="info_text">Es freut mich, dass du diese App installiert hast. Falls du mich bei der Weiterentwicklung unterstützen willst, dann
         bewerte die App auf Google Play:</string>
@@ -14,5 +13,5 @@
     <string name="games_result">%1$d : %2$d</string>
     <string name="Refresh">Aktualisieren</string>
     <string name="noConnection">Server kann momentan leider nicht erreicht werden.</string>
-    <string name="nextFeature">Bestimme das nächste Feature dieser App!</string>
+    <string name="nextFeature">Wähle das nächste Feature dieser App!</string>
 </resources>

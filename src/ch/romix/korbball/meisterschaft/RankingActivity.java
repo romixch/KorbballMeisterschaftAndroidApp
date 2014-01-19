@@ -26,7 +26,9 @@ public class RankingActivity extends Activity {
 	public static final String INTENT_GROUP_NAME = "groupName";
 	public static final String INTENT_GROUP_ID = "groupId";
 
-	static final String DETAIL = "detail";
+	static final String GAMES = "games";
+	static final String RATE = "rate";
+	static final String POINTS = "points";
 	static final String TEAM_TITLE = "teamTitle";
 	static final String TEAM_ID = "teamId";
 	static final String TEAM_NAME = "teamName";
@@ -123,8 +125,8 @@ public class RankingActivity extends Activity {
 
 	private void linkDataAndView() {
 		data = new LinkedList<Map<String, String>>();
-		adapter = new SimpleAdapter(this, data, R.layout.rankingitem, new String[] { TEAM_TITLE, DETAIL }, new int[] { R.id.RankingTeam,
-				R.id.RankingDetails });
+		adapter = new SimpleAdapter(this, data, R.layout.rankingitem, new String[] { TEAM_TITLE, GAMES, RATE, POINTS }, new int[] {
+				R.id.RankingTeam, R.id.rankingGames, R.id.rankingRate, R.id.rankingPoints });
 		ListView listView = (ListView) findViewById(R.id.ranking_listview);
 		listView.setAdapter(adapter);
 	}
