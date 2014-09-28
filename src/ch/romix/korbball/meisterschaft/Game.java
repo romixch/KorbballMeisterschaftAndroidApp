@@ -11,6 +11,7 @@ public class Game {
 	private int resultA;
 	private int resultB;
 	private boolean played;
+	private String dayOfWeek;
 
 	public String getDay() {
 		return day;
@@ -18,6 +19,14 @@ public class Game {
 
 	public void setDay(String day) {
 		this.day = day;
+	}
+
+	public String getDayOfWeek() {
+		return dayOfWeek;
+	}
+
+	public void setDayOfWeek(String dayOfWeek) {
+		this.dayOfWeek = dayOfWeek;
 	}
 
 	public String getTime() {

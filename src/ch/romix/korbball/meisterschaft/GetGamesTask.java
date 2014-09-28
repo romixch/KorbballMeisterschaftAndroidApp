@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -71,6 +72,7 @@ class GetGamesTask extends AsyncTask<Void, Void, List<Game>> {
 	private Game parseGame(JSONObject gameJson) throws JSONException {
 		Game gameData = new Game();
 		gameData.setDay(formatDate(gameJson.getString(JSON_DAY)));
+		gameData.setDayOfWeek(getDayOfWeek(gameJson.getString(JSON_DAY)));
 		gameData.setTime(formatTime(gameJson.getString(JSON_TIME)));
 		gameData.setHall(gameJson.getString(JSON_HALL));
 		gameData.setRound(gameJson.getString(JSON_ROUND));
@@ -119,6 +121,44 @@ class GetGamesTask extends AsyncTask<Void, Void, List<Game>> {
 			formatted = jsonDay;
 		}
 		return formatted;
+	}
+
+	private String getDayOfWeek(String jsonDay) {
+		String dayOfWeek;
+		try {
+			Date date = DATE_PARSER.parse(jsonDay);
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(date);
+			int dayOfWeekInt = calendar.get(Calendar.DAY_OF_WEEK);
+			switch (dayOfWeekInt) {
+			case Calendar.MONDAY:
+				dayOfWeek = "Montag";
+				break;
+			case Calendar.TUESDAY:
+				dayOfWeek = "Dienstag";
+				break;
+			case Calendar.WEDNESDAY:
+				dayOfWeek = "Mittwoch";
+				break;
+			case Calendar.THURSDAY:
+				dayOfWeek = "Donnerstag";
+				break;
+			case Calendar.FRIDAY:
+				dayOfWeek = "Freitag";
+				break;
+			case Calendar.SATURDAY:
+				dayOfWeek = "Samstag";
+				break;
+			case Calendar.SUNDAY:
+				dayOfWeek = "Sonntag";
+				break;
+			default:
+				dayOfWeek = "";
+			}
+		} catch (ParseException e) {
+			dayOfWeek = "";
+		}
+		return dayOfWeek;
 	}
 
 	@Override

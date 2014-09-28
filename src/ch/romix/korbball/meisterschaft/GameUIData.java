@@ -15,8 +15,8 @@ public abstract class GameUIData {
 
 	private View view;
 
-	public static GameUIData createDay(String day) {
-		return new GameUIDataForDay(day);
+	public static GameUIData createDay(String day, String dayOfWeek) {
+		return new GameUIDataForDay(day, dayOfWeek);
 	}
 
 	public static GameUIData createGame(Game game, String currentTeam) {
@@ -42,8 +42,8 @@ public abstract class GameUIData {
 	private static final class GameUIDataForDay extends GameUIData {
 		private final String day;
 
-		public GameUIDataForDay(String day) {
-			this.day = day;
+		public GameUIDataForDay(String day, String dayOfWeek) {
+			this.day = day + " / " + dayOfWeek;
 		}
 
 		@Override

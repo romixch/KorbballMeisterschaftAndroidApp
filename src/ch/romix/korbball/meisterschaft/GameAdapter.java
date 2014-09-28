@@ -35,7 +35,7 @@ public class GameAdapter extends BaseAdapter {
 		String lastDay = "";
 		for (Game game : games) {
 			if (!lastDay.equals(game.getDay())) {
-				uiDataByRowId.put(rowId++, GameUIData.createDay(game.getDay()));
+				uiDataByRowId.put(rowId++, GameUIData.createDay(game.getDay(), game.getDayOfWeek()));
 			}
 			uiDataByRowId.put(rowId++, GameUIData.createGame(game, currentTeam));
 			lastDay = game.getDay();
