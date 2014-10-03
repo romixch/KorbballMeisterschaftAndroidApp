@@ -54,14 +54,14 @@ public class GetGroupsTask extends AsyncTask<Void, Void, List<Map<String, String
 				String groupId = it.next().toString();
 				String groupName = object.get(groupId).toString();
 				HashMap<String, String> map = new HashMap<String, String>();
-				map.put(Start.GROUP_ID, groupId);
-				map.put(Start.GROUP_NAME, groupName);
+				map.put(GroupsActivity.GROUP_ID, groupId);
+				map.put(GroupsActivity.GROUP_NAME, groupName);
 				result.add(map);
 			}
 			Collections.sort(result, new Comparator<Map<String, String>>() {
 				@Override
 				public int compare(Map<String, String> lhs, Map<String, String> rhs) {
-					return lhs.get(Start.GROUP_NAME).compareTo(rhs.get(Start.GROUP_NAME));
+					return lhs.get(GroupsActivity.GROUP_NAME).compareTo(rhs.get(GroupsActivity.GROUP_NAME));
 				}
 			});
 		} catch (ClientProtocolException e) {

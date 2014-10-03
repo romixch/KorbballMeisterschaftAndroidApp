@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">Korbball Meisterschaft Innerschweiz</string>
     <string name="menu_info">Info</string>
     <string name="welcome">Bitte wähle eine Gruppe aus folgender Liste aus:</string>
     <string name="title_activity_ranking">Rangliste %1$s</string>
     <string name="title_activity_info">Info</string>
+    <string name="title_activity_groups">Gruppen</string>
+    <string name="title_activity_favorites">Favoriten</string>
     <string name="info_text">Es freut mich, dass du diese App installiert hast. Falls du mich bei der Weiterentwicklung unterstützen willst, dann
         bewerte die App auf Google Play:</string>
     <string name="info_comment">Zu Google Play</string>
@@ -14,4 +17,8 @@
     <string name="Refresh">Aktualisieren</string>
     <string name="noConnection">Server kann momentan leider nicht erreicht werden.</string>
     <string name="nextFeature">Wähle das nächste Feature dieser App!</string>
+    <string name="tab_groups">Gruppen</string>
+    <string name="tab_favorites">Favoriten</string>
+    <string name="newFavorite">Team als Favorit hinzufügen</string>
+
 </resources>

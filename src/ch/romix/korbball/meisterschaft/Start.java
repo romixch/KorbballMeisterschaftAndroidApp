@@ -1,51 +1,43 @@
 package ch.romix.korbball.meisterschaft;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
-
 import android.app.Activity;
+import android.app.LocalActivityManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.TabHost;
+import android.widget.TabHost.TabSpec;
 
 public class Start extends Activity {
-
-	static final String GROUP_NAME = "name";
-	static final String GROUP_ID = "id";
-	private List<Map<String, String>> groupsByGroupId;
-	private SimpleAdapter simpleAdapter;
-	private GetGroupsTask getGroupsTask;
+	private LocalActivityManager localActivityManager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_start);
-		ListView listleague = (ListView) findViewById(R.id.listLeague);
-		groupsByGroupId = new LinkedList<Map<String, String>>();
-		simpleAdapter = new SimpleAdapter(this, groupsByGroupId, android.R.layout.simple_list_item_1, new String[] { GROUP_NAME },
-				new int[] { android.R.id.text1 });
-		listleague.setAdapter(simpleAdapter);
-		listleague.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Intent myIntent = new Intent(view.getContext(), RankingActivity.class);
-				Map<String, String> map = groupsByGroupId.get((int) id);
-				myIntent.putExtra(RankingActivity.INTENT_GROUP_ID, map.get(GROUP_ID));
-				myIntent.putExtra(RankingActivity.INTENT_GROUP_NAME, map.get(GROUP_NAME));
-				startActivity(myIntent);
-			}
-		});
+
+		localActivityManager = new LocalActivityManager(this, false);
+
+		TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
+
+		TabSpec tabFavorite = tabHost.newTabSpec("Favoriten");
+		TabSpec tabGroups = tabHost.newTabSpec("Gruppen");
+
+		tabFavorite.setIndicator("Favoriten");
+		tabFavorite.setContent(new Intent(this, FavoritesActivity.class));
+		tabGroups.setIndicator("Gruppen");
+		tabGroups.setContent(new Intent(this, GroupsActivity.class));
+
+		localActivityManager.dispatchCreate(savedInstanceState);
+		tabHost.setup(localActivityManager);
+		tabHost.addTab(tabFavorite);
+		tabHost.addTab(tabGroups);
+
 		Button nextFeature = (Button) findViewById(R.id.nextFeature);
 		nextFeature.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -54,8 +46,18 @@ public class Start extends Activity {
 				startActivity(pollIntent);
 			}
 		});
-		getGroupsTask = new GetGroupsTask(groupsByGroupId, simpleAdapter, this);
-		getGroupsTask.execute();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		localActivityManager.dispatchResume();
+	}
+
+	@Override
+	protected void onPause() {
+		localActivityManager.dispatchPause(isFinishing());
+		super.onPause();
 	}
 
 	@Override
@@ -72,9 +74,5 @@ public class Start extends Activity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	public void waitForGroups() throws InterruptedException, ExecutionException {
-		getGroupsTask.waitForDrawing();
 	}
 }
