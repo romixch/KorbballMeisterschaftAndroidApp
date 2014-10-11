@@ -12,7 +12,7 @@ import java.util.Map;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -109,8 +109,8 @@ class GetRankingTask extends AsyncTask<Void, Void, List<Map<String, String>>> {
 	private HttpResponse requestRankings() throws IOException, ClientProtocolException {
 		HttpClient httpclient = new DefaultHttpClient();
 		String groupId = this.rankingActivity.getIntent().getStringExtra(RankingActivity.INTENT_GROUP_ID);
-		HttpPost httppost = new HttpPost(UrlConsts.RANKINGS + groupId);
-		HttpResponse response = httpclient.execute(httppost);
+		HttpGet httpGET = new HttpGet(UrlConsts.RANKINGS + groupId);
+		HttpResponse response = httpclient.execute(httpGET);
 		return response;
 	}
 

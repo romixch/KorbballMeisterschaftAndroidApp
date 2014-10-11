@@ -13,7 +13,7 @@ import java.util.Locale;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,8 +94,8 @@ class GetGamesTask extends AsyncTask<Void, Void, List<Game>> {
 
 	private HttpResponse requestGames() throws IOException, ClientProtocolException {
 		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(UrlConsts.GAMES + teamId);
-		HttpResponse response = httpclient.execute(httppost);
+		HttpGet httpGET = new HttpGet(UrlConsts.GAMES + teamId);
+		HttpResponse response = httpclient.execute(httpGET);
 		return response;
 	}
 

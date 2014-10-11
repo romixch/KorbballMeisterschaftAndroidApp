@@ -13,7 +13,7 @@ import java.util.concurrent.CountDownLatch;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,10 +42,10 @@ public class GetGroupsTask extends AsyncTask<Void, Void, List<Map<String, String
 	protected List<Map<String, String>> doInBackground(Void... params) {
 		final List<Map<String, String>> result = new ArrayList<Map<String, String>>();
 		HttpClient httpclient = new DefaultHttpClient();
-		HttpPost httppost = new HttpPost(UrlConsts.GROUPS);
+		HttpGet httpGET = new HttpGet(UrlConsts.GROUPS);
 		HttpResponse response;
 		try {
-			response = httpclient.execute(httppost);
+			response = httpclient.execute(httpGET);
 			String jsonResult = StreamTools.inputStreamToString(response.getEntity().getContent()).toString();
 			JSONObject object = new JSONObject(jsonResult);
 			@SuppressWarnings("rawtypes")
@@ -94,10 +94,6 @@ public class GetGroupsTask extends AsyncTask<Void, Void, List<Map<String, String
 		}
 		super.onPostExecute(result);
 		finishedDrawingSignal.countDown();
-	}
-
-	public void waitForDrawing() throws InterruptedException {
-		finishedDrawingSignal.await();
 	}
 
 	private boolean hasException() {
