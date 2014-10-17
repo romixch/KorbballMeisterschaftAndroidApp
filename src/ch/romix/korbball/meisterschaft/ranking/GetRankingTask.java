@@ -18,12 +18,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.os.AsyncTask;
 import ch.romix.korbball.meisterschaft.StreamTools;
 import ch.romix.korbball.meisterschaft.UrlConsts;
 
-import android.os.AsyncTask;
-
-class GetRankingTask extends AsyncTask<Void, Void, List<Map<String, String>>> {
+public class GetRankingTask extends AsyncTask<Void, Void, List<Map<String, String>>> {
 
 	private static final String JSON_POINTS = "points";
 	private static final String JSON_GAMES = "games";
@@ -38,7 +37,7 @@ class GetRankingTask extends AsyncTask<Void, Void, List<Map<String, String>>> {
 	/**
 	 * @param rankingActivity
 	 */
-	GetRankingTask(RankingActivity rankingActivity) {
+	public GetRankingTask(RankingActivity rankingActivity) {
 		this.rankingActivity = rankingActivity;
 	}
 

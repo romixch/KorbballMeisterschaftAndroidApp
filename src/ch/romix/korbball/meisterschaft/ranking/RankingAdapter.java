@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import ch.romix.korbball.meisterschaft.R;
 import ch.romix.korbball.meisterschaft.favorite.FavoriteStore;
+import ch.romix.korbball.meisterschaft.groups.Group;
 
 public class RankingAdapter extends BaseAdapter {
 
@@ -20,9 +21,11 @@ public class RankingAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private Resources resources;
 	private FavoriteStore favoriteStore;
+	private Group group;
 
-	public RankingAdapter(Context context, List<Map<String, String>> data) {
+	public RankingAdapter(Context context, List<Map<String, String>> data, Group group) {
 		this.data = data;
+		this.group = group;
 		inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		resources = context.getResources();
 		favoriteStore = new FavoriteStore(context);
@@ -78,7 +81,7 @@ public class RankingAdapter extends BaseAdapter {
 				favoriteStore.removeFavorite(teamId);
 				button.setImageDrawable(resources.getDrawable(R.drawable.rate_star_big_off));
 			} else {
-				favoriteStore.addFavorite(teamId, teamName);
+				favoriteStore.addFavorite(teamId, teamName, group);
 				button.setImageDrawable(resources.getDrawable(R.drawable.rate_star_big_on));
 			}
 		}

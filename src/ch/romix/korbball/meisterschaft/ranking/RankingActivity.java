@@ -22,6 +22,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import ch.romix.korbball.meisterschaft.R;
 import ch.romix.korbball.meisterschaft.game.GamesActivity;
+import ch.romix.korbball.meisterschaft.groups.Group;
 
 public class RankingActivity extends Activity {
 
@@ -40,10 +41,12 @@ public class RankingActivity extends Activity {
 	List<Map<String, String>> data;
 	private MenuItem refreshItem;
 	private Animation rotation;
+	private Group group;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		group = new Group(getIntent().getStringExtra(INTENT_GROUP_ID), getIntent().getStringExtra(INTENT_GROUP_NAME));
 		setContentView(R.layout.activity_ranking);
 		writeTitle();
 		linkDataAndView();
@@ -116,8 +119,7 @@ public class RankingActivity extends Activity {
 	}
 
 	private void writeTitle() {
-		String groupName = getIntent().getStringExtra(INTENT_GROUP_NAME);
-		String title = String.format(getResources().getString(R.string.title_activity_ranking), groupName);
+		String title = String.format(getResources().getString(R.string.title_activity_ranking), group.getGroupName());
 		setTitle(title);
 	}
 
@@ -128,7 +130,7 @@ public class RankingActivity extends Activity {
 	private void linkDataAndView() {
 		data = new LinkedList<Map<String, String>>();
 		ListView listView = (ListView) findViewById(R.id.ranking_listview);
-		adapter = new RankingAdapter(this, data);
+		adapter = new RankingAdapter(this, data, group);
 		listView.setAdapter(adapter);
 	}
 
