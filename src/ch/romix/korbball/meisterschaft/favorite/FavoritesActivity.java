@@ -10,19 +10,25 @@ import ch.romix.korbball.meisterschaft.R;
 
 public class FavoritesActivity extends Activity {
 
+	private LayoutInflater inflater;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.favorites);
+		inflater = LayoutInflater.from(getApplicationContext());
+	}
 
-		LinearLayout favoriteView = (LinearLayout) findViewById(R.id.favoriteScrollViewLayout);
-		LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+	private void buildFavoriteView() {
+		LinearLayout favoriteView = getFavoriteView();
 
 		FavoriteStore favoriteStore = new FavoriteStore(this);
 		String[] favoritedTeams = favoriteStore.getFavorites();
 
-		if (favoritedTeams.length > 0) {
-			View findViewById = findViewById(R.id.textHowToAddFavorites);
+		View findViewById = findViewById(R.id.textHowToAddFavorites);
+		if (favoritedTeams.length == 0) {
+			findViewById.setVisibility(View.VISIBLE);
+		} else {
 			findViewById.setVisibility(View.GONE);
 		}
 
@@ -39,5 +45,17 @@ public class FavoritesActivity extends Activity {
 	private void setText(View view, int textViewResource, String text) {
 		TextView teamView = (TextView) view.findViewById(textViewResource);
 		teamView.setText(text);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		LinearLayout favoriteView = getFavoriteView();
+		favoriteView.removeAllViews();
+		buildFavoriteView();
+	}
+
+	private LinearLayout getFavoriteView() {
+		return (LinearLayout) findViewById(R.id.favoriteScrollViewLayout);
 	}
 }
