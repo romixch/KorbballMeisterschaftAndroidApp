@@ -27,11 +27,17 @@ public class FavoritesActivity extends Activity {
 		}
 
 		for (String favoriteId : favoritedTeams) {
-			String favoriteName = favoriteStore.getFavoriteName(favoriteId);
 			View favoriteTeamView = inflater.inflate(R.layout.favorite, favoriteView, false);
-			TextView teamView = (TextView) favoriteTeamView.findViewById(R.id.favoriteTeamName);
-			teamView.setText(favoriteName);
+
+			setText(favoriteTeamView, R.id.favoriteTeamName, favoriteStore.getFavoriteName(favoriteId));
+			setText(favoriteTeamView, R.id.favoriteGroupName, favoriteStore.getFavoriteGroupName(favoriteId));
+
 			favoriteView.addView(favoriteTeamView);
 		}
+	}
+
+	private void setText(View view, int textViewResource, String text) {
+		TextView teamView = (TextView) view.findViewById(textViewResource);
+		teamView.setText(text);
 	}
 }
