@@ -3,49 +3,63 @@
     android:id="@+id/RankingItem"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:descendantFocusability="blocksDescendants"
     android:paddingBottom="5dp"
     android:paddingTop="5dp" >
 
     <LinearLayout
-        android:id="@+id/RankingItemLayout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/RankingTeam"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_height="wrap_content" >
 
         <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:id="@+id/RankingItemLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_horizontal"
+            android:layout_weight="1"
+            android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/rankingGames"
-                android:layout_width="wrap_content"
+                android:id="@+id/RankingTeam"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="games"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <TextView
-                android:id="@+id/rankingRate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Rate" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/rankingPoints"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="TextView" />
+                <TextView
+                    android:id="@+id/rankingGames"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="games"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
 
+                <TextView
+                    android:id="@+id/rankingRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Rate" />
+
+                <TextView
+                    android:id="@+id/rankingPoints"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView" />
+            </LinearLayout>
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/rankingFavorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:background="#00ffffff"
+            android:src="@drawable/rate_star_big_off" />
     </LinearLayout>
 
 </RelativeLayout>

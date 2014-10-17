@@ -1,4 +1,4 @@
-package ch.romix.korbball.meisterschaft;
+package ch.romix.korbball.meisterschaft.ranking;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -17,6 +17,9 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import ch.romix.korbball.meisterschaft.StreamTools;
+import ch.romix.korbball.meisterschaft.UrlConsts;
 
 import android.os.AsyncTask;
 

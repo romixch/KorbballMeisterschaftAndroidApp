@@ -1,5 +1,7 @@
 package ch.romix.korbball.meisterschaft;
 
+import ch.romix.korbball.meisterschaft.favorite.FavoritesActivity;
+import ch.romix.korbball.meisterschaft.groups.GroupsActivity;
 import android.app.Activity;
 import android.app.LocalActivityManager;
 import android.content.Intent;

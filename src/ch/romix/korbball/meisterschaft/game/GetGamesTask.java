@@ -1,4 +1,4 @@
-package ch.romix.korbball.meisterschaft;
+package ch.romix.korbball.meisterschaft.game;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -20,8 +20,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
+import ch.romix.korbball.meisterschaft.StreamTools;
+import ch.romix.korbball.meisterschaft.UrlConsts;
 
-class GetGamesTask extends AsyncTask<Void, Void, List<Game>> {
+public class GetGamesTask extends AsyncTask<Void, Void, List<Game>> {
 
 	private static String JSON_DAY = "tag";
 	private static String JSON_TIME = "zeit";
@@ -37,12 +39,12 @@ class GetGamesTask extends AsyncTask<Void, Void, List<Game>> {
 	static SimpleDateFormat TIME_PARSER = new SimpleDateFormat("HH:mm:ss", Locale.US);
 	static DateFormat TIME_FORMATTER = SimpleDateFormat.getTimeInstance(DateFormat.SHORT);
 
-	private final GamesActivity gamesActivity;
+	private final Runnable callback;
 	private final String teamId;
 	private final List<Game> games;
 
-	GetGamesTask(GamesActivity gamesActivity, String teamId, List<Game> games) {
-		this.gamesActivity = gamesActivity;
+	public GetGamesTask(Runnable callback, String teamId, List<Game> games) {
+		this.callback = callback;
 		this.teamId = teamId;
 		this.games = games;
 	}
@@ -167,7 +169,7 @@ class GetGamesTask extends AsyncTask<Void, Void, List<Game>> {
 		for (Game game : result) {
 			games.add(game);
 		}
-		gamesActivity.updateView();
+		callback.run();
 		super.onPostExecute(result);
 	}
 }

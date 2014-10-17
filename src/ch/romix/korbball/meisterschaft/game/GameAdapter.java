@@ -1,4 +1,4 @@
-package ch.romix.korbball.meisterschaft;
+package ch.romix.korbball.meisterschaft.game;
 
 import java.util.HashMap;
 import java.util.LinkedList;

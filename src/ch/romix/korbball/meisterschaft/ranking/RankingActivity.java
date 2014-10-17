@@ -1,4 +1,4 @@
-package ch.romix.korbball.meisterschaft;
+package ch.romix.korbball.meisterschaft.ranking;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -18,8 +18,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import ch.romix.korbball.meisterschaft.R;
+import ch.romix.korbball.meisterschaft.game.GamesActivity;
 
 public class RankingActivity extends Activity {
 
@@ -34,7 +36,7 @@ public class RankingActivity extends Activity {
 	static final String TEAM_NAME = "teamName";
 	static final String RANKING = "ranking";
 
-	SimpleAdapter adapter;
+	BaseAdapter adapter;
 	List<Map<String, String>> data;
 	private MenuItem refreshItem;
 	private Animation rotation;
@@ -125,9 +127,8 @@ public class RankingActivity extends Activity {
 
 	private void linkDataAndView() {
 		data = new LinkedList<Map<String, String>>();
-		adapter = new SimpleAdapter(this, data, R.layout.rankingitem, new String[] { TEAM_TITLE, GAMES, RATE, POINTS }, new int[] {
-				R.id.RankingTeam, R.id.rankingGames, R.id.rankingRate, R.id.rankingPoints });
 		ListView listView = (ListView) findViewById(R.id.ranking_listview);
+		adapter = new RankingAdapter(this, data);
 		listView.setAdapter(adapter);
 	}
 

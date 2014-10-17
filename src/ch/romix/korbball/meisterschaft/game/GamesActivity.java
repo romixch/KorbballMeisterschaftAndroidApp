@@ -1,6 +1,12 @@
-package ch.romix.korbball.meisterschaft;
+package ch.romix.korbball.meisterschaft.game;
 
 import java.util.LinkedList;
+
+import ch.romix.korbball.meisterschaft.R;
+import ch.romix.korbball.meisterschaft.R.anim;
+import ch.romix.korbball.meisterschaft.R.id;
+import ch.romix.korbball.meisterschaft.R.layout;
+import ch.romix.korbball.meisterschaft.R.menu;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -17,8 +23,8 @@ import android.widget.ListView;
 
 public class GamesActivity extends Activity {
 
-	protected static String INTENT_TEAM_NAME = "team";
-	protected static String INTENT_TEAM_ID = "teamId";
+	public static final String INTENT_TEAM_NAME = "team";
+	public static final String INTENT_TEAM_ID = "teamId";
 
 	final private LinkedList<Game> games;
 	private GameAdapter adapter;
@@ -115,7 +121,12 @@ public class GamesActivity extends Activity {
 	}
 
 	private GetGamesTask createGamesTask() {
-		return new GetGamesTask(this, teamId, games);
+		return new GetGamesTask(new Runnable() {
+			@Override
+			public void run() {
+				updateView();
+			}
+		}, teamId, games);
 	}
 
 	private boolean withAnimation() {

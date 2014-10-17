@@ -19,6 +19,5 @@
     <string name="nextFeature">Wähle das nächste Feature dieser App!</string>
     <string name="tab_groups">Gruppen</string>
     <string name="tab_favorites">Favoriten</string>
-    <string name="newFavorite">Team als Favorit hinzufügen</string>
-
+	<string name="howToAddVavorites">So fügst du dein Team als Favorit hinzu: Öffne dein Team und klicke auf den Favoriten-Stern.</string>
 </resources>

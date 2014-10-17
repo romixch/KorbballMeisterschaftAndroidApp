@@ -12,7 +12,9 @@
             android:id="@+id/nextFeature"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/nextFeature" />
+            android:text="@string/nextFeature"
+            android:visibility="gone" />
+
     </LinearLayout>
 
     <TabHost

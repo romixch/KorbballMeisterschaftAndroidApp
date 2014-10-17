@@ -5,7 +5,7 @@
     android:versionName="0.95" >
 
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="9"
         android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="ch.romix.korbball.meisterschaft.RankingActivity"
+            android:name="ch.romix.korbball.meisterschaft.ranking.RankingActivity"
             android:label="@string/title_activity_ranking" >
         </activity>
         <activity
@@ -33,15 +33,15 @@
             android:label="@string/title_activity_info" >
         </activity>
         <activity
-            android:name="ch.romix.korbball.meisterschaft.GamesActivity"
+            android:name="ch.romix.korbball.meisterschaft.game.GamesActivity"
             android:label="@string/title_activity_games" >
         </activity>
         <activity
-            android:name="ch.romix.korbball.meisterschaft.FavoritesActivity"
+            android:name="ch.romix.korbball.meisterschaft.favorite.FavoritesActivity"
             android:label="@string/title_activity_favorites" >
         </activity>
         <activity
-            android:name="ch.romix.korbball.meisterschaft.GroupsActivity"
+            android:name="ch.romix.korbball.meisterschaft.groups.GroupsActivity"
             android:label="@string/title_activity_groups" >
         </activity>
     </application>

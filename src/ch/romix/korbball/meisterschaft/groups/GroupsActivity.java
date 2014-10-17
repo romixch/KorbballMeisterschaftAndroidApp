@@ -14,8 +14,6 @@ import ch.romix.korbball.meisterschaft.ranking.RankingActivity;
 
 public class GroupsActivity extends Activity {
 
-	static final String GROUP_NAME = "name";
-	static final String GROUP_ID = "id";
 	private LinkedList<Group> groups;
 	private GroupAdapter groupAdapter;
 	private GetGroupsTask getGroupsTask;
