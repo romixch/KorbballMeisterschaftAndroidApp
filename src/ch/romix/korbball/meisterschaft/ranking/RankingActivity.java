@@ -34,8 +34,8 @@ public class RankingActivity extends Activity {
 	static final String POINTS = "points";
 	static final String TEAM_TITLE = "teamTitle";
 	static final String TEAM_ID = "teamId";
-	static final String TEAM_NAME = "teamName";
-	static final String RANKING = "ranking";
+	public static final String TEAM_NAME = "teamName";
+	public static final String RANKING = "ranking";
 
 	BaseAdapter adapter;
 	List<Map<String, String>> data;

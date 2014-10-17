@@ -12,6 +12,7 @@ public class FavoriteStore {
 	private static final String KEY_FAVORITES = "favorites";
 	private static final String KEY_FAVORITES_TEAM_NAME = "favorites_%s";
 	private static final String KEY_FAVORITES_GROUP_NAME = "favorites_group_%s";
+	private static final String KEY_FAVORITES_GROUPID_NAME = "favorites_groupId_%s";
 
 	private SharedPreferences sharedPreferences;
 
@@ -61,12 +62,14 @@ public class FavoriteStore {
 	private void saveFavoriteGroup(String teamId, Group group) {
 		Editor editor = sharedPreferences.edit();
 		editor.putString(String.format(KEY_FAVORITES_GROUP_NAME, teamId), group.getGroupName());
+		editor.putString(String.format(KEY_FAVORITES_GROUPID_NAME, teamId), group.getGroupId());
 		editor.commit();
 	}
 
 	private void removeFavoriteGroup(String teamId) {
 		Editor editor = sharedPreferences.edit();
 		editor.remove(String.format(KEY_FAVORITES_GROUP_NAME, teamId));
+		editor.remove(String.format(KEY_FAVORITES_GROUPID_NAME, teamId));
 		editor.commit();
 	}
 
@@ -107,6 +110,10 @@ public class FavoriteStore {
 
 	public String getFavoriteGroupName(String teamId) {
 		return sharedPreferences.getString(String.format(KEY_FAVORITES_GROUP_NAME, teamId), "");
+	}
+
+	public String getFavoriteGroupId(String teamId) {
+		return sharedPreferences.getString(String.format(KEY_FAVORITES_GROUPID_NAME, teamId), "");
 	}
 
 	public boolean isFavorite(String teamId) {
