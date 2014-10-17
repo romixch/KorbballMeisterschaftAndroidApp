@@ -124,7 +124,13 @@ public class RankingActivity extends Activity {
 	}
 
 	private GetRankingTask createRankingTask() {
-		return new GetRankingTask(this);
+		Runnable callback = new Runnable() {
+			@Override
+			public void run() {
+				RankingActivity.this.updateView();
+			}
+		};
+		return new GetRankingTask(data, callback, group.getGroupId());
 	}
 
 	private void linkDataAndView() {
@@ -148,9 +154,11 @@ public class RankingActivity extends Activity {
 		});
 	}
 
-	void updateView() {
-		stopAnimatedRefreshButton();
-		adapter.notifyDataSetChanged();
+	private void updateView() {
+		if (!isFinishing()) {
+			stopAnimatedRefreshButton();
+			adapter.notifyDataSetChanged();
+		}
 	}
 
 	private boolean withAnimation() {

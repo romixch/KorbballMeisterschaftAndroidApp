@@ -32,13 +32,14 @@ public class GetRankingTask extends AsyncTask<Void, Void, List<Map<String, Strin
 	private static final String JSON_RANK = "rank";
 	private static final String JSON_RATE = "rate";
 
-	private final RankingActivity rankingActivity;
+	private List<Map<String, String>> data;
+	private Runnable callback;
+	private String groupId;
 
-	/**
-	 * @param rankingActivity
-	 */
-	public GetRankingTask(RankingActivity rankingActivity) {
-		this.rankingActivity = rankingActivity;
+	public GetRankingTask(List<Map<String, String>> data, Runnable callback, String groupId) {
+		this.data = data;
+		this.callback = callback;
+		this.groupId = groupId;
 	}
 
 	@Override
@@ -110,7 +111,6 @@ public class GetRankingTask extends AsyncTask<Void, Void, List<Map<String, Strin
 
 	private HttpResponse requestRankings() throws IOException, ClientProtocolException {
 		HttpClient httpclient = new DefaultHttpClient();
-		String groupId = this.rankingActivity.getIntent().getStringExtra(RankingActivity.INTENT_GROUP_ID);
 		HttpGet httpGET = new HttpGet(UrlConsts.RANKINGS + groupId);
 		HttpResponse response = httpclient.execute(httpGET);
 		return response;
@@ -118,13 +118,11 @@ public class GetRankingTask extends AsyncTask<Void, Void, List<Map<String, Strin
 
 	@Override
 	protected void onPostExecute(List<Map<String, String>> result) {
-		if (!rankingActivity.isFinishing()) {
-			this.rankingActivity.data.clear();
-			for (Map<String, String> map : result) {
-				this.rankingActivity.data.add(map);
-			}
-			this.rankingActivity.updateView();
+		this.data.clear();
+		for (Map<String, String> map : result) {
+			this.data.add(map);
 		}
+		callback.run();
 		super.onPostExecute(result);
 	}
 }
