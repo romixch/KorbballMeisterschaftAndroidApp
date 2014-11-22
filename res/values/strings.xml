@@ -20,4 +20,6 @@
     <string name="tab_groups">Gruppen</string>
     <string name="tab_favorites">Favoriten</string>
 	<string name="howToAddVavorites">So fügst du dein Team als Favorit hinzu: Öffne dein Team und klicke auf den Favoriten-Stern.</string>
+	<string name="lastGames">Die letzten Resultate</string>
+	<string name="nextGames">Die nächsten Spiele</string>
 </resources>

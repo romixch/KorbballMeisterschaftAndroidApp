@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import ch.romix.korbball.meisterschaft.R;
+import ch.romix.korbball.meisterschaft.game.Game;
+import ch.romix.korbball.meisterschaft.game.GetGamesTask;
 import ch.romix.korbball.meisterschaft.groups.Group;
 import ch.romix.korbball.meisterschaft.ranking.GetRankingTask;
 import ch.romix.korbball.meisterschaft.ranking.RankingActivity;
@@ -41,80 +43,39 @@ public class FavoritesActivity extends Activity {
 			findViewById.setVisibility(View.GONE);
 		}
 
-		for (String favoriteId : favoritedTeams) {
+		for (String favoriteTeamId : favoritedTeams) {
 			View favoriteTeamView = inflater.inflate(R.layout.favorite, favoriteView, false);
 
-			setText(favoriteTeamView, R.id.favoriteTeamName, favoriteStore.getFavoriteName(favoriteId), false, null);
-			setText(favoriteTeamView, R.id.favoriteGroupName, favoriteStore.getFavoriteGroupName(favoriteId), false, null);
+			setText(favoriteTeamView, R.id.favoriteTeamName, favoriteStore.getFavoriteName(favoriteTeamId));
+			setText(favoriteTeamView, R.id.favoriteGroupName, favoriteStore.getFavoriteGroupName(favoriteTeamId));
 
-			installRankingTask(favoriteStore, favoriteId, favoriteTeamView);
+			installRankingTask(favoriteStore, favoriteTeamId, favoriteTeamView);
+			installGamesTask(favoriteStore, favoriteTeamId, favoriteTeamView);
 
 			favoriteView.addView(favoriteTeamView);
 		}
 	}
 
-	private void installRankingTask(final FavoriteStore favoriteStore, final String favoriteId, final View favoriteTeamView) {
+	private void installRankingTask(final FavoriteStore favoriteStore, final String favoriteTeamId, final View favoriteTeamView) {
 		final LinkedList<Map<String, String>> rankingData = new LinkedList<Map<String, String>>();
-		Runnable callback = new Runnable() {
-			@Override
-			public void run() {
-				String thisTeamName = favoriteStore.getFavoriteName(favoriteId);
-				final Group group = new Group(favoriteStore.getFavoriteGroupId(favoriteId), favoriteStore.getFavoriteGroupName(favoriteId));
-				final Intent groupIntent = getIntent(group);
-				View.OnClickListener listener = new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						startActivity(groupIntent);
-					}
-				};
-				int i;
-				for (i = 0; i < rankingData.size(); i++) {
-					Map<String, String> ranking = rankingData.get(i);
-					String teamName = ranking.get(RankingActivity.TEAM_NAME);
-					if (teamName.equals(thisTeamName)) {
-						break;
-					}
-				}
-
-				if (i == 0) {
-					setText(favoriteTeamView, R.id.favoriteRanking1, getTeamString(rankingData, i), true, listener);
-					setText(favoriteTeamView, R.id.favoriteRanking2, getTeamString(rankingData, i + 1), false, listener);
-					setText(favoriteTeamView, R.id.favoriteRanking3, getTeamString(rankingData, i + 2), false, listener);
-				} else if (i == rankingData.size() - 1) {
-					setText(favoriteTeamView, R.id.favoriteRanking1, getTeamString(rankingData, i - 2), false, listener);
-					setText(favoriteTeamView, R.id.favoriteRanking2, getTeamString(rankingData, i - 1), false, listener);
-					setText(favoriteTeamView, R.id.favoriteRanking3, getTeamString(rankingData, i), true, listener);
-				} else {
-					setText(favoriteTeamView, R.id.favoriteRanking1, getTeamString(rankingData, i - 1), false, listener);
-					setText(favoriteTeamView, R.id.favoriteRanking2, getTeamString(rankingData, i), true, listener);
-					setText(favoriteTeamView, R.id.favoriteRanking3, getTeamString(rankingData, i + 1), false, listener);
-				}
-
-			}
-
-			private String getTeamString(final LinkedList<Map<String, String>> rankingData, int i) {
-				return rankingData.get(i).get(RankingActivity.RANKING) + ". " + rankingData.get(i).get(RankingActivity.TEAM_NAME);
-			}
-		};
-		new GetRankingTask(rankingData, callback, favoriteStore.getFavoriteGroupId(favoriteId)).execute();
+		Runnable callback = new RankingResponseCallback(this, favoriteTeamId, favoriteTeamView, rankingData, favoriteStore);
+		new GetRankingTask(rankingData, callback, favoriteStore.getFavoriteGroupId(favoriteTeamId)).execute();
 	}
 
-	private void setText(View view, int textViewResource, String text, boolean bold, View.OnClickListener clickListener) {
+	private void installGamesTask(FavoriteStore favoriteStore, String favoriteTeamId, final View favoriteTeamView) {
+		final LinkedList<Game> games = new LinkedList<Game>();
+		Runnable callback = new GamesResponseCallback(favoriteTeamView, games);
+		new GetGamesTask(callback, favoriteTeamId, games).execute();
+	}
+
+	void setText(View view, int textViewResource, String text) {
 		TextView teamView = (TextView) view.findViewById(textViewResource);
 		teamView.setText(text);
-		if (bold) {
-			teamView.setTypeface(null, Typeface.BOLD);
-			teamView.setTextColor(getResources().getColor(android.R.color.white));
-		} else {
-			teamView.setTypeface(null, Typeface.NORMAL);
-			teamView.setTextColor(Color.parseColor("#E0E0E0"));
-		}
-		if (clickListener != null) {
-			view.setOnClickListener(clickListener);
-		}
+		teamView.setTypeface(null, Typeface.NORMAL);
+		teamView.setTextColor(Color.parseColor("#E0E0E0"));
 	}
 
-	private Intent getIntent(Group group) {
+	Intent getIntent(Group group) {
 		Intent myIntent = new Intent(getApplicationContext(), RankingActivity.class);
 		myIntent.putExtra(RankingActivity.INTENT_GROUP_ID, group.getGroupId());
 		myIntent.putExtra(RankingActivity.INTENT_GROUP_NAME, group.getGroupName());
