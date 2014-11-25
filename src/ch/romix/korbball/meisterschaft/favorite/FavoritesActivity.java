@@ -64,7 +64,7 @@ public class FavoritesActivity extends Activity {
 
 	private void installGamesTask(FavoriteStore favoriteStore, String favoriteTeamId, final View favoriteTeamView) {
 		final LinkedList<Game> games = new LinkedList<Game>();
-		Runnable callback = new GamesResponseCallback(favoriteTeamView, games);
+		Runnable callback = new GamesResponseCallback(favoriteTeamView, games, favoriteStore, favoriteTeamId);
 		new GetGamesTask(callback, favoriteTeamId, games).execute();
 	}
 

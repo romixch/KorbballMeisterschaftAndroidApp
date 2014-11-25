@@ -5,18 +5,26 @@ import java.util.Stack;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.style.CharacterStyle;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.TextView.BufferType;
 import ch.romix.korbball.meisterschaft.R;
 import ch.romix.korbball.meisterschaft.game.Game;
 
 final class GamesResponseCallback implements Runnable {
 	private final View favoriteTeamView;
 	private final LinkedList<Game> games;
+	private FavoriteStore favoriteStore;
+	private String favoriteTeamId;
 
-	GamesResponseCallback(View favoriteTeamView, LinkedList<Game> games) {
+	GamesResponseCallback(View favoriteTeamView, LinkedList<Game> games, FavoriteStore favoriteStore, String favoriteTeamId) {
 		this.favoriteTeamView = favoriteTeamView;
 		this.games = games;
+		this.favoriteStore = favoriteStore;
+		this.favoriteTeamId = favoriteTeamId;
 	}
 
 	@Override
@@ -50,22 +58,40 @@ final class GamesResponseCallback implements Runnable {
 	}
 
 	private void setPlayedGame(int lineNumber, Game game) {
-		String playedString = getPlayedGameString(game);
 		if (lineNumber == 1) {
-			setText(favoriteTeamView, R.id.lastGames1, playedString, null);
+			setPlayedGameText(game, R.id.lastGames1);
 		} else if (lineNumber == 2) {
-			setText(favoriteTeamView, R.id.lastGames2, playedString, null);
+			setPlayedGameText(game, R.id.lastGames2);
 		} else if (lineNumber == 3) {
-			setText(favoriteTeamView, R.id.lastGames3, playedString, null);
+			setPlayedGameText(game, R.id.lastGames3);
 		}
 	}
 
-	private String getPlayedGameString(Game game) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(game.getDay()).append(": ");
-		sb.append(game.getTeamA()).append(" - ").append(game.getTeamB()).append(" ");
-		sb.append(game.getResultA()).append(" : ").append(game.getResultB());
-		return sb.toString();
+	private void setPlayedGameText(Game game, int textViewResource) {
+		TextView textView = (TextView) favoriteTeamView.findViewById(textViewResource);
+		textView.setVisibility(View.VISIBLE);
+		String otherTeam;
+		String thisTeam = favoriteStore.getFavoriteName(this.favoriteTeamId);
+		if (game.getTeamA().equals(thisTeam)) {
+			otherTeam = game.getTeamB();
+		} else {
+			otherTeam = game.getTeamA();
+		}
+
+		CharacterStyle colorSpan = null;
+		if (thisTeam.equals(game.getWinner())) {
+			colorSpan = new ForegroundColorSpan(0xFF00FF00);
+		} else if (game.isTie()) {
+			colorSpan = new ForegroundColorSpan(0xFFFFFF00);
+		} else {
+			colorSpan = new ForegroundColorSpan(0xFFFF0000);
+		}
+		String firstPart = String.format("%1$s: %2$s / ", game.getDay(), otherTeam);
+		String secondPart = String.format("%1$s : %2$s", game.getResultA(), game.getResultB());
+		String bothParts = firstPart + secondPart;
+		textView.setText(bothParts, BufferType.SPANNABLE);
+		Spannable pointsText = (Spannable) textView.getText();
+		pointsText.setSpan(colorSpan, firstPart.length(), bothParts.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 	}
 
 	private void setLastGameInvisible(int lineNumber) {
@@ -93,7 +119,13 @@ final class GamesResponseCallback implements Runnable {
 		sb.append(game.getDay()).append(" ");
 		sb.append(game.getTime()).append(" ");
 		sb.append(game.getHall()).append(": ");
-		sb.append(game.getTeamA()).append(" - ").append(game.getTeamB());
+		String team;
+		if (favoriteStore.getFavoriteName(favoriteTeamId).equals(game.getTeamA())) {
+			team = game.getTeamB();
+		} else {
+			team = game.getTeamA();
+		}
+		sb.append(team);
 		return sb.toString();
 	}
 
