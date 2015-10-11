@@ -31,37 +31,64 @@ final class RankingResponseCallback implements Runnable {
 	@Override
 	public void run() {
 		String thisTeamName = favoriteStore.getFavoriteName(favoriteTeamId);
+		if (isFavoriteTeamInGroup(thisTeamName)) {
+			View.OnClickListener listener = createGroupActivityListener();
+			setupRanking(thisTeamName, listener);
+		} else {
+			this.favoriteTeamView.setVisibility(View.GONE);
+			favoriteStore.removeFavorite(favoriteTeamId);
+		}
+	}
+
+	private View.OnClickListener createGroupActivityListener() {
 		final Group group = new Group(favoriteStore.getFavoriteGroupId(favoriteTeamId), favoriteStore.getFavoriteGroupName(favoriteTeamId));
 		final Intent groupIntent = this.favoritesActivity.getIntent(group);
+
 		View.OnClickListener listener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				RankingResponseCallback.this.favoritesActivity.startActivity(groupIntent);
 			}
 		};
-		int i;
-		for (i = 0; i < rankingData.size(); i++) {
-			Map<String, String> ranking = rankingData.get(i);
+		return listener;
+	}
+
+	private void setupRanking(String thisTeamName, View.OnClickListener listener) {
+		int rank;
+		for (rank = 0; rank < rankingData.size(); rank++) {
+			Map<String, String> ranking = rankingData.get(rank);
 			String teamName = ranking.get(RankingActivity.TEAM_NAME);
 			if (teamName.equals(thisTeamName)) {
 				break;
 			}
 		}
 
-		if (i == 0) {
-			setText(favoriteTeamView, R.id.favoriteRanking1, getTeamString(rankingData, i), true, listener);
-			setText(favoriteTeamView, R.id.favoriteRanking2, getTeamString(rankingData, i + 1), false, listener);
-			setText(favoriteTeamView, R.id.favoriteRanking3, getTeamString(rankingData, i + 2), false, listener);
-		} else if (i == rankingData.size() - 1) {
-			setText(favoriteTeamView, R.id.favoriteRanking1, getTeamString(rankingData, i - 2), false, listener);
-			setText(favoriteTeamView, R.id.favoriteRanking2, getTeamString(rankingData, i - 1), false, listener);
-			setText(favoriteTeamView, R.id.favoriteRanking3, getTeamString(rankingData, i), true, listener);
+		if (rank == 0) {
+			// Our team is at the first place
+			setText(favoriteTeamView, R.id.favoriteRanking1, getTeamString(rankingData, rank), true, listener);
+			setText(favoriteTeamView, R.id.favoriteRanking2, getTeamString(rankingData, rank + 1), false, listener);
+			setText(favoriteTeamView, R.id.favoriteRanking3, getTeamString(rankingData, rank + 2), false, listener);
+		} else if (rank == rankingData.size() - 1) {
+			// Our team is at the last place
+			setText(favoriteTeamView, R.id.favoriteRanking1, getTeamString(rankingData, rank - 2), false, listener);
+			setText(favoriteTeamView, R.id.favoriteRanking2, getTeamString(rankingData, rank - 1), false, listener);
+			setText(favoriteTeamView, R.id.favoriteRanking3, getTeamString(rankingData, rank), true, listener);
 		} else {
-			setText(favoriteTeamView, R.id.favoriteRanking1, getTeamString(rankingData, i - 1), false, listener);
-			setText(favoriteTeamView, R.id.favoriteRanking2, getTeamString(rankingData, i), true, listener);
-			setText(favoriteTeamView, R.id.favoriteRanking3, getTeamString(rankingData, i + 1), false, listener);
+			// Our team is somewhere in between
+			setText(favoriteTeamView, R.id.favoriteRanking1, getTeamString(rankingData, rank - 1), false, listener);
+			setText(favoriteTeamView, R.id.favoriteRanking2, getTeamString(rankingData, rank), true, listener);
+			setText(favoriteTeamView, R.id.favoriteRanking3, getTeamString(rankingData, rank + 1), false, listener);
 		}
+	}
 
+	private boolean isFavoriteTeamInGroup(String thisTeamName) {
+		for (Map<String, String> ranking : rankingData) {
+			String teamName = ranking.get(RankingActivity.TEAM_NAME);
+			if (teamName.equals(thisTeamName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private String getTeamString(final LinkedList<Map<String, String>> rankingData, int i) {
