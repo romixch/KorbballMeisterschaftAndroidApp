@@ -33,6 +33,8 @@ public class GetGamesTask extends AsyncTask<Void, Void, List<Game>> {
 	private static String JSON_TEAM_B = "txtTeamB";
 	private static String JSON_RESULT_A = "resultatA";
 	private static String JSON_RESULT_B = "resultatB";
+	private static String JSON_POINTS_A = "punkteA";
+	private static String JSON_POINTS_B = "punkteB";
 
 	static SimpleDateFormat DATE_PARSER = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 	static DateFormat DATE_FORMATTER = SimpleDateFormat.getDateInstance(DateFormat.SHORT);
@@ -87,6 +89,10 @@ public class GetGamesTask extends AsyncTask<Void, Void, List<Game>> {
 				gameData.setResultA(resultA);
 				int resultB = Integer.parseInt(gameJson.getString(JSON_RESULT_B));
 				gameData.setResultB(resultB);
+				int pointsA = Integer.parseInt(gameJson.getString(JSON_POINTS_A));
+				gameData.setPointsA(pointsA);
+				int pointsB = Integer.parseInt(gameJson.getString(JSON_POINTS_B));
+				gameData.setPointsB(pointsB);
 			} catch (NumberFormatException e) {
 				e.printStackTrace();
 			}

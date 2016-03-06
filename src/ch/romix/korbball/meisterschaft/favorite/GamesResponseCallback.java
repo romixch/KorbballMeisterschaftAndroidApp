@@ -79,10 +79,10 @@ final class GamesResponseCallback implements Runnable {
 		}
 
 		CharacterStyle colorSpan = null;
-		if (thisTeam.equals(game.getWinner())) {
-			colorSpan = new ForegroundColorSpan(0xFF00FF00);
-		} else if (game.isTie()) {
+		if (game.isTie()) {
 			colorSpan = new ForegroundColorSpan(0xFFFFFF00);
+		} else if (game.isThisTheWinner(thisTeam)) {
+			colorSpan = new ForegroundColorSpan(0xFF00FF00);
 		} else {
 			colorSpan = new ForegroundColorSpan(0xFFFF0000);
 		}

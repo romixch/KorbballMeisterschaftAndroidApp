@@ -12,6 +12,8 @@ public class Game {
 	private int resultB;
 	private boolean played;
 	private String dayOfWeek;
+	private int pointsA;
+	private int pointsB;
 
 	public String getDay() {
 		return day;
@@ -85,6 +87,32 @@ public class Game {
 		this.resultB = resultB;
 	}
 
+	public int getPointsA() {
+		return pointsA;
+	}
+
+	public void setPointsA(int pointsA) {
+		this.pointsA = pointsA;
+	}
+
+	public int getPointsB() {
+		return pointsB;
+	}
+
+	public void setPointsB(int pointsB) {
+		this.pointsB = pointsB;
+	}
+
+	public int getMyPoints(String team) {
+		if (teamA.endsWith(team)) {
+			return pointsA;
+		} else if (teamB.endsWith(team)) {
+			return pointsB;
+		} else {
+			return 0;
+		}
+	}
+
 	public boolean isPlayed() {
 		return played;
 	}
@@ -97,13 +125,13 @@ public class Game {
 		return resultA == resultB;
 	}
 
-	public String getWinner() {
-		if (resultA > resultB) {
-			return teamA;
-		} else if (resultA < resultB) {
-			return teamB;
+	public boolean isThisTheWinner(String team) {
+		if (teamA.endsWith(team)) {
+			return resultA > resultB;
+		} else if (teamB.endsWith(team)) {
+			return resultB > resultA;
 		} else {
-			return "";
+			return false;
 		}
 	}
 }

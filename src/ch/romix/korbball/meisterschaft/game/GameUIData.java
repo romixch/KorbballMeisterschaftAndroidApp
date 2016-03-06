@@ -106,16 +106,13 @@ public abstract class GameUIData {
 			TextView pointsView = (TextView) rowView.findViewById(R.id.game_points);
 			if (game.isPlayed()) {
 
-				String points = "";
+				String points = String.valueOf(game.getMyPoints(currentTeam));
 				CharacterStyle colorSpan = null;
 				if (game.isTie()) {
 					colorSpan = new ForegroundColorSpan(0xFFFFFF00);
-					points = "1";
-				} else if (game.getWinner().equals(currentTeam)) {
+				} else if (game.isThisTheWinner(currentTeam)) {
 					colorSpan = new ForegroundColorSpan(0xFF00FF00);
-					points = "2";
 				} else {
-					points = "0";
 					colorSpan = new ForegroundColorSpan(0xFFFF0000);
 				}
 				pointsView.setText(points, BufferType.SPANNABLE);
@@ -133,7 +130,7 @@ public abstract class GameUIData {
 
 			Spannable text = (Spannable) teams.getText();
 			StyleSpan boldSpan = new StyleSpan(android.graphics.Typeface.BOLD_ITALIC);
-			if (game.getTeamA().equals(currentTeam)) {
+			if (game.getTeamA().endsWith(currentTeam)) {
 				text.setSpan(boldSpan, 0, game.getTeamA().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 			} else {
 				int l = game.getTeamB().length();
